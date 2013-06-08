@@ -740,7 +740,7 @@ void matomaserv_reload(void) {
 	oldListenHost = ListenHost;
 	oldListenPort = ListenPort;
 	ListenHost = cfg_getstr("MATOMA_LISTEN_HOST","*");
-	ListenPort = cfg_getstr("MATOMA_LISTEN_PORT2","9494");
+	ListenPort = cfg_getstr("MATOMA_LISTEN_PORT2","9495");
 	if (strcmp(oldListenHost,ListenHost)==0 && strcmp(oldListenPort,ListenPort)==0) {
 		free(oldListenHost);
 		free(oldListenPort);
@@ -787,7 +787,7 @@ void matomaserv_reload(void) {
 
 int matomaserv_init(void) {
 	ListenHost = cfg_getstr("MATOMA_LISTEN_HOST","*");
-	ListenPort = cfg_getstr("MATOMA_LISTEN_PORT2","9494"); //yujy  listen to master2 ub-2
+	ListenPort = cfg_getstr("MATOMA_LISTEN_PORT2","9495"); //yujy  listen to master2 ub-2
     syslog(LOG_WARNING,"in matomaserv_init yujy");
 
 	lsock = tcpsocket();
