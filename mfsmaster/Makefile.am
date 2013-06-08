@@ -13,6 +13,8 @@ mfsmaster_SOURCES=\
 	matocsserv.c matocsserv.h \
 	matoclserv.c matoclserv.h \
 	matomlserv.c matomlserv.h \
+	matomaserv.c matomaserv.h \
+	masterconn.c masterconn.h \
 	datacachemgr.c datacachemgr.h \
 	chartsdata.c chartsdata.h \
 	init.h \

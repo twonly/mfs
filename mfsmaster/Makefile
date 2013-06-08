@@ -71,6 +71,7 @@ PROGRAMS = $(sbin_PROGRAMS)
 am_mfsmaster_OBJECTS = itree.$(OBJEXT) topology.$(OBJEXT) \
 	exports.$(OBJEXT) changelog.$(OBJEXT) chunks.$(OBJEXT) \
 	filesystem.$(OBJEXT) matocsserv.$(OBJEXT) matoclserv.$(OBJEXT) \
+	matomaserv.$(OBJEXT) masterconn.$(OBJEXT) \
 	matomlserv.$(OBJEXT) datacachemgr.$(OBJEXT) \
 	chartsdata.$(OBJEXT) main.$(OBJEXT) cfg.$(OBJEXT) \
 	random.$(OBJEXT) md5.$(OBJEXT) crc.$(OBJEXT) sockets.$(OBJEXT) \
@@ -261,6 +262,8 @@ mfsmaster_SOURCES = \
 	matocsserv.c matocsserv.h \
 	matoclserv.c matoclserv.h \
 	matomlserv.c matomlserv.h \
+	matomaserv.c matomaserv.h \
+	masterconn.c masterconn.h \
 	datacachemgr.c datacachemgr.h \
 	chartsdata.c chartsdata.h \
 	init.h \
@@ -381,6 +384,8 @@ include ./$(DEPDIR)/main.Po
 include ./$(DEPDIR)/matoclserv.Po
 include ./$(DEPDIR)/matocsserv.Po
 include ./$(DEPDIR)/matomlserv.Po
+include ./$(DEPDIR)/matomaserv.Po
+include ./$(DEPDIR)/masterconn.Po
 include ./$(DEPDIR)/md5.Po
 include ./$(DEPDIR)/random.Po
 include ./$(DEPDIR)/sockets.Po

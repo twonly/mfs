@@ -14,7 +14,7 @@ hostname = twonly
 uname -m = i686
 uname -r = 3.5.0-26-generic
 uname -s = Linux
-uname -v = #40-Ubuntu SMP Tue Feb 26 19:59:36 UTC 2013
+uname -v = #42-Ubuntu SMP Fri Mar 8 23:20:06 UTC 2013
 
 /usr/bin/uname -p = unknown
 /bin/uname -X     = unknown
@@ -539,7 +539,7 @@ conftest.c: In function 'routine':
 conftest.c:28:41: warning: parameter 'a' set but not used [-Wunused-but-set-parameter]
 conftest.c: In function 'main':
 conftest.c:34:34: warning: 'th' is used uninitialized in this function [-Wuninitialized]
-/tmp/cc2h2XsF.o: In function `main':
+/tmp/ccB0Vnc8.o: In function `main':
 /home/twonly/Downloads/mfs-1.6.27/conftest.c:34: undefined reference to `pthread_join'
 /home/twonly/Downloads/mfs-1.6.27/conftest.c:36: undefined reference to `__pthread_register_cancel'
 /home/twonly/Downloads/mfs-1.6.27/conftest.c:37: undefined reference to `pthread_create'
@@ -764,7 +764,7 @@ configure:15935: result: none required
 configure:15943: checking for library containing round
 configure:15974: gcc -o conftest -std=c99 -g -O2 -Wall -Wextra -Wshadow -pedantic -fwrapv -O2  -D_GNU_SOURCE -DDEFAULT_SUGID_CLEAR_MODE_EXT  conftest.c  >&5
 conftest.c:36:6: warning: conflicting types for built-in function 'round' [enabled by default]
-/tmp/ccEpAVUd.o: In function `main':
+/tmp/ccSaRn1E.o: In function `main':
 /home/twonly/Downloads/mfs-1.6.27/conftest.c:40: undefined reference to `round'
 collect2: error: ld returned 1 exit status
 configure:15974: $? = 1

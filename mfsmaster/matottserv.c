@@ -2025,7 +2025,6 @@ void matoclserv_fuse_mknod(matoclserventry *eptr,const uint8_t *data,uint32_t le
 	uint8_t attr[35];
 	uint32_t msgid;
 	uint8_t *ptr;
-    syslog(LOG_NOTICE,"in CLTOMA_FUSE_MKNOD  yujy");
 	uint8_t status;
 	if (length<24) {
 		syslog(LOG_NOTICE,"CLTOMA_FUSE_MKNOD - wrong size (%"PRIu32")",length);

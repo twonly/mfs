@@ -25,6 +25,8 @@
 #include "datacachemgr.h"
 #include "matomlserv.h"
 #include "matocsserv.h"
+#include "matomaserv.h"
+#include "masterconn.h"
 #include "matoclserv.h"
 #include "filesystem.h"
 #include "random.h"
@@ -51,6 +53,8 @@ struct {
 	{chartsdata_init,"charts module"},
 	{matomlserv_init,"communication with metalogger"},
 	{matocsserv_init,"communication with chunkserver"},
+	{matomaserv_init,"communication with master"},
+	{masterconn_init,"connect master"},
 	{matoclserv_networkinit,"communication with clients"},
 	{(runfn)0,"****"}
 },LateRunTab[]={
