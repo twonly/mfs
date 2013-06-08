@@ -49,7 +49,7 @@
 // mode
 enum {FREE,CONNECTING,HEADER,DATA,KILL};
 
-typedef struct packetstruct {
+/*typedef struct packetstruct {
 	struct packetstruct *next;
 	uint8_t *startptr;
 	uint32_t bytesleft;
@@ -69,8 +69,9 @@ typedef struct masterconn {
 	uint16_t masterport;
 	uint8_t masteraddrvalid;
 } masterconn;
+*/
 
-static masterconn *masterconnsingleton=NULL; //singleton means a metalogger can only connect to one MASTER
+masterconn *masterconnsingleton=NULL; //singleton means a metalogger can only connect to one MASTER
 
 // from config
 static uint32_t BackLogsNumber;
@@ -343,7 +344,7 @@ void masterconn_connecttest(masterconn *eptr) {
 		eptr->mode = FREE;
 		eptr->masteraddrvalid = 0;
 	} else {
-		syslog(LOG_NOTICE,"connected to Master");
+		syslog(LOG_NOTICE,"connected to Master2");
 		masterconn_connected(eptr);
 	}
 }
@@ -542,7 +543,7 @@ void masterconn_reload(void) {
 	free(BindHost);
 
 	MasterHost = cfg_getstr("MASTER_HOST","mfsmaster");
-	MasterPort = cfg_getstr("MASTER_PORT","9419");
+	MasterPort = cfg_getstr("MASTER_PORT2","9494");
 	BindHost = cfg_getstr("BIND_HOST","*");
 
 	eptr->masteraddrvalid = 0;
@@ -572,8 +573,8 @@ int masterconn_init(void) {
     syslog(LOG_WARNING,"in masterconn connect init yujy"); //yujy
 
 	ReconnectionDelay = cfg_getuint32("MASTER_RECONNECTION_DELAY",5);
-	MasterHost = cfg_getstr("MATOMA_LISTEN_HOST","mfsmaster");
-	MasterPort = cfg_getstr("MATOMA_LISTEN_PORT","9494");
+	MasterHost = cfg_getstr("MATOMA_LISTEN_HOST","mfsmaster"); //yujy  connect to ma2
+	MasterPort = cfg_getstr("MATOMA_LISTEN_PORT2","9494");
 	BindHost = cfg_getstr("BIND_HOST","*");
 	Timeout = cfg_getuint32("MASTER_TIMEOUT",10);
 	//BackLogsNumber = cfg_getuint32("BACK_LOGS",50);
@@ -597,6 +598,7 @@ int masterconn_init(void) {
 	}*/
 	eptr = masterconnsingleton = malloc(sizeof(masterconn));
 	passert(eptr);
+    syslog(LOG_WARNING,"in masterconn create masterconnsingleton  yujy"); //yujy
 
 	eptr->masteraddrvalid = 0;
 	eptr->mode = FREE;

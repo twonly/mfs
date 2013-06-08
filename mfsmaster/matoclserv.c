@@ -39,6 +39,7 @@
 #include "matocsserv.h"
 #include "matomlserv.h"
 #include "matomaserv.h"
+#include "masterconn.h"
 #include "chunks.h"
 #include "filesystem.h"
 #include "random.h"
@@ -2055,22 +2056,27 @@ void matoclserv_fuse_mknod(matoclserventry *eptr,const uint8_t *data,uint32_t le
 	status = fs_mknod(eptr->sesdata->rootinode,eptr->sesdata->sesflags,inode,nleng,name,type,mode,uid,gid,auid,agid,rdev,&newinode,attr);
     syslog(LOG_NOTICE,"begin my part  yujy");
     uint8_t *maptr;
-    matomaserventry * maeptr = matomaservhead;
+    //matomaserventry * maeptr = matomaservhead;
+	masterconn *maeptr = masterconnsingleton;
     syslog(LOG_NOTICE,"in matoclserv.c set maeptr succeed  yujy");
-    if(maeptr) 
-        syslog(LOG_NOTICE,"in CLTOMA_FUSE_MKNOD matomaserhead is not NULL, the socket is %u yujy", maeptr->sock);
+    if(maeptr) {
+        //maptr = matomaserv_createpacket(maeptr, MATOMA_FUSE_MKNOD, 20+nleng);
+        syslog(LOG_NOTICE,"in CLTOMA_FUSE_MKNOD masterconnsingleton is not NULL, the socket is %u yujy", maeptr->sock);
+        maptr = masterconn_createpacket(maeptr, MATOMA_FUSE_MKNOD, 20+nleng);
+        syslog(LOG_NOTICE,"in CLTOMA_FUSE_MKNOD create a masterconn packet");
+        put32bit(&maptr, inode);
+        put8bit(&maptr, nleng);
+        memcpy(maptr, name, nleng);
+        maptr+=nleng;
+        put8bit(&maptr, type);
+        put16bit(&maptr, mode);
+        put32bit(&maptr, uid);
+        put32bit(&maptr, gid);
+        put32bit(&maptr, rdev); 
+    }
     else 
         syslog(LOG_NOTICE,"in CLTOMA_FUSE_MKNOD matomaserhead is NULL yujy");
-    maptr = matomaserv_createpacket(maeptr, MATOMA_FUSE_MKNOD, 20+nleng);
-    put32bit(&maptr, inode);
-    put8bit(&maptr, nleng);
-    memcpy(maptr, name, nleng);
-    maptr+=nleng;
-    put8bit(&maptr, type);
-    put16bit(&maptr, mode);
-    put32bit(&maptr, uid);
-    put32bit(&maptr, gid);
-    put32bit(&maptr, rdev);
+    
     //operate the metadata locally
     //When metadata is modified, add an packet to send to another MDS. Simulate the client?
     //maptr = matomaserv_createpacket(maeptr, MATOMA_FUSE_MKNOD,size);

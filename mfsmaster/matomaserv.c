@@ -478,7 +478,14 @@ void matomaserv_gotpacket(matomaserventry *eptr,uint32_t type,const uint8_t *dat
 		case MATOMA_REGISTER:
 			matomaserv_register(eptr,data,length);
 			break;
-		//case MATOMA_DOWNLOAD_START:
+        case MATOMA_FUSE_MKNOD: //for temporary use
+            syslog(LOG_NOTICE, "got MATOMA_FUSE_MKNOD");
+            int tmptmp = get32bit(&data);
+            int tmptmp2 = get8bit(&data);
+            //int tmptmp = get32bit(&data);
+            syslog(LOG_NOTICE, "got inode %u, nleng %u", tmptmp, tmptmp2);
+            break;
+        //case MATOMA_DOWNLOAD_START:
             //    matomaserv_download_start(eptr,data,length);
             //    break;
             //case MATOMA_DOWNLOAD_DATA:
@@ -487,10 +494,10 @@ void matomaserv_gotpacket(matomaserventry *eptr,uint32_t type,const uint8_t *dat
             //case MATOMA_DOWNLOAD_END:
             //    matomaserv_download_end(eptr,data,length);
             //    break;
-		default:
-			syslog(LOG_NOTICE,"master <-> metaloggers module: got unknown message (type:%"PRIu32")",type);
-			eptr->mode=KILL;
-	}
+        default:
+            syslog(LOG_NOTICE,"master <-> metaloggers module: got unknown message (type:%"PRIu32")",type);
+            eptr->mode=KILL;
+    }
 }
 
 void matomaserv_term(void) {
@@ -733,7 +740,7 @@ void matomaserv_reload(void) {
 	oldListenHost = ListenHost;
 	oldListenPort = ListenPort;
 	ListenHost = cfg_getstr("MATOMA_LISTEN_HOST","*");
-	ListenPort = cfg_getstr("MATOMA_LISTEN_PORT","9419");
+	ListenPort = cfg_getstr("MATOMA_LISTEN_PORT2","9494");
 	if (strcmp(oldListenHost,ListenHost)==0 && strcmp(oldListenPort,ListenPort)==0) {
 		free(oldListenHost);
 		free(oldListenPort);
@@ -779,13 +786,13 @@ void matomaserv_reload(void) {
 }
 
 int matomaserv_init(void) {
-	ListenHost = cfg_getstr("matoma_LISTEN_HOST","*");
-	ListenPort = cfg_getstr("matoma_LISTEN_PORT","9494");
+	ListenHost = cfg_getstr("MATOMA_LISTEN_HOST","*");
+	ListenPort = cfg_getstr("MATOMA_LISTEN_PORT2","9494"); //yujy  listen to master2 ub-2
     syslog(LOG_WARNING,"in matomaserv_init yujy");
 
 	lsock = tcpsocket();
 	if (lsock<0) {
-		mfs_errlog(LOG_ERR,"master <-> master module: can't create socket");
+		mfs_errlog(LOG_ERR,"master <-> master2 module: can't create socket");
 		return -1;
 	}
 	tcpnonblock(lsock);
@@ -798,7 +805,7 @@ int matomaserv_init(void) {
 		mfs_arg_errlog(LOG_ERR,"master <-> master module: can't listen on %s:%s",ListenHost,ListenPort);
 		return -1;
 	}
-	mfs_arg_syslog(LOG_NOTICE,"master <-> master module: listen on %s:%s",ListenHost,ListenPort);
+	mfs_arg_syslog(LOG_NOTICE,"master <-> master2 module: listen on %s:%s",ListenHost,ListenPort);
 
 	matomaservhead = NULL;
 

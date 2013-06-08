@@ -20,6 +20,7 @@
 #define _MASTERCONN_H_
 
 #include <inttypes.h>
+#include "matomaserv.h"
 
 //void masterconn_stats(uint64_t *bin,uint64_t *bout,uint32_t *maxjobscnt);
 // void masterconn_replicate_status(uint64_t chunkid,uint32_t version,uint8_t status);
@@ -28,5 +29,28 @@
 // void masterconn_send_error_occurred();
 // void masterconn_send_space(uint64_t usedspace,uint64_t totalspace,uint32_t chunkcount,uint64_t tdusedspace,uint64_t tdtotalspace,uint32_t tdchunkcount);
 int masterconn_init(void);
+
+/*typedef struct packetstruct {
+	struct packetstruct *next;
+	uint8_t *startptr;
+	uint32_t bytesleft;
+	uint8_t *packet;
+} packetstruct; */
+
+typedef struct masterconn {
+	int mode;
+	int sock;
+	int32_t pdescpos;
+	uint32_t lastread,lastwrite;
+	uint8_t hdrbuff[8];
+	packetstruct inputpacket;
+	packetstruct *outputhead,**outputtail;
+	uint32_t bindip;
+	uint32_t masterip;
+	uint16_t masterport;
+	uint8_t masteraddrvalid;
+} masterconn;
+
+extern masterconn *masterconnsingleton; //yujy =NULL; //singleton means a metalogger can only connect to one MASTER
 
 #endif

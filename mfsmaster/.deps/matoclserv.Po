@@ -59,9 +59,10 @@ matoclserv.o: matoclserv.c ../config.h /usr/include/stdio.h \
  /usr/include/i386-linux-gnu/sys/resource.h \
  /usr/include/i386-linux-gnu/bits/resource.h \
  ../mfscommon/MFSCommunication.h ../mfscommon/datapack.h matoclserv.h \
- matocsserv.h matomlserv.h matomaserv.h chunks.h filesystem.h \
- ../mfscommon/random.h exports.h datacachemgr.h ../mfscommon/charts.h \
- chartsdata.h ../mfscommon/cfg.h ../mfscommon/main.h /usr/include/poll.h \
+ matocsserv.h matomlserv.h matomaserv.h masterconn.h chunks.h \
+ filesystem.h ../mfscommon/random.h exports.h datacachemgr.h \
+ ../mfscommon/charts.h chartsdata.h ../mfscommon/cfg.h \
+ ../mfscommon/main.h /usr/include/poll.h \
  /usr/include/i386-linux-gnu/sys/poll.h \
  /usr/include/i386-linux-gnu/bits/poll.h ../mfscommon/sockets.h \
  ../mfscommon/slogger.h ../mfscommon/strerr.h ../mfscommon/massert.h
@@ -237,6 +238,8 @@ matocsserv.h:
 matomlserv.h:
 
 matomaserv.h:
+
+masterconn.h:
 
 chunks.h:
 
