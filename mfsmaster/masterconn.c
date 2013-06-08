@@ -208,7 +208,7 @@ void masterconn_sendregister(masterconn *eptr) {
 
 
 void masterconn_gotpacket(masterconn *eptr,uint32_t type,const uint8_t *data,uint32_t length) {
-    syslog(LOG_WARNING,"in masterconn gotpacket  yujy"); //yujy
+    //syslog(LOG_WARNING,"in masterconn gotpacket  yujy"); //yujy
 	switch (type) {
 		case ANTOAN_NOP:
             //syslog(LOG_NOTICE, "got ANTOAN_NOP");
@@ -219,6 +219,13 @@ void masterconn_gotpacket(masterconn *eptr,uint32_t type,const uint8_t *data,uin
 			break;
         case MATOMA_REGISTER: //for temporary use
             syslog(LOG_NOTICE, "got all MATOMA_REGISTER");
+            break;
+        case MATOMA_FUSE_MKNOD: //for temporary use
+            syslog(LOG_NOTICE, "got MATOMA_FUSE_MKNOD");
+            int tmptmp = get32bit(&data);
+            int tmptmp2 = get8bit(&data);
+            //int tmptmp = get32bit(&data);
+            syslog(LOG_NOTICE, "got inode %u, nleng %u", tmptmp, tmptmp2);
             break;
 		default:
 			syslog(LOG_NOTICE,"got unknown message (type:%"PRIu32")",type);

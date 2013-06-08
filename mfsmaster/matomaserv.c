@@ -48,7 +48,7 @@
 // matomaserventry.mode
 enum{KILL,HEADER,DATA};
 
-typedef struct packetstruct {
+/*typedef struct packetstruct {
 	struct packetstruct *next;
 	uint8_t *startptr;
 	uint32_t bytesleft;
@@ -74,8 +74,9 @@ typedef struct matomaserventry {
 
 	struct matomaserventry *next;
 } matomaserventry;
+*/ //yujy comment
 
-static matomaserventry *matomaservhead=NULL;
+matomaserventry *matomaservhead=NULL;
 static int lsock;
 static int32_t lsockpdescpos;
 
@@ -204,19 +205,26 @@ uint8_t* matomaserv_createpacket(matomaserventry *eptr,uint32_t type,uint32_t si
 	uint8_t *ptr;
 	uint32_t psize;
 
+    //syslog(LOG_NOTICE, "in matomaserv.c createpacket  yujy");
+
 	outpacket=(packetstruct*)malloc(sizeof(packetstruct));
 	passert(outpacket);
+    //syslog(LOG_NOTICE, "in matomaserv.c malloc packetstruct succeed  yujy");
 	psize = size+8;
 	outpacket->packet=malloc(psize);
 	passert(outpacket->packet);
+    //syslog(LOG_NOTICE, "in matomaserv.c malloc outpacket->packet succeed  yujy");
 	outpacket->bytesleft = psize;
 	ptr = outpacket->packet;
 	put32bit(&ptr,type);
 	put32bit(&ptr,size);
 	outpacket->startptr = (uint8_t*)(outpacket->packet);
 	outpacket->next = NULL;
+    //syslog(LOG_NOTICE, "in matomaserv.c set startptr succeed  yujy");
 	*(eptr->outputtail) = outpacket; //why use 2-dimesion array?
+    //syslog(LOG_NOTICE, "in matomaserv.c set *eptr->outputtail succeed  yujy");
 	eptr->outputtail = &(outpacket->next);
+    //syslog(LOG_NOTICE, "in matomaserv.c createpacket end  yujy");
 	return ptr;
 }
 
@@ -633,6 +641,7 @@ void matomaserv_serve(struct pollfd *pdesc) {
 	matomaserventry *eptr,**kptr;
 	packetstruct *pptr,*paptr;
 	int ns;
+    //syslog(LOG_NOTICE, "in matomaserv.c matomaserv_serv  yujy");
 
 	if (lsockpdescpos>=0 && (pdesc[lsockpdescpos].revents & POLLIN)) {
 		ns=tcpaccept(lsock);
@@ -645,6 +654,7 @@ void matomaserv_serve(struct pollfd *pdesc) {
 			passert(eptr);
 			eptr->next = matomaservhead; //add a matomaserventry
 			matomaservhead = eptr;
+			syslog(LOG_NOTICE,"in matomaserv.c add an eptr  yujy");
 			eptr->sock = ns;
 			eptr->pdescpos = -1;
 			eptr->mode = HEADER;
@@ -667,6 +677,7 @@ void matomaserv_serve(struct pollfd *pdesc) {
 		}
 	}
 	for (eptr=matomaservhead ; eptr ; eptr=eptr->next) {
+        //syslog(LOG_NOTICE,"in matomaserv.c matomaservhead is not NULL  yujy");
 		if (eptr->pdescpos>=0) {
 			if (pdesc[eptr->pdescpos].revents & (POLLERR|POLLHUP)) {
 				eptr->mode = KILL;

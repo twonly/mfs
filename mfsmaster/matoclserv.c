@@ -38,6 +38,7 @@
 #include "matoclserv.h"
 #include "matocsserv.h"
 #include "matomlserv.h"
+#include "matomaserv.h"
 #include "chunks.h"
 #include "filesystem.h"
 #include "random.h"
@@ -125,12 +126,13 @@ typedef struct session {
 	struct session *next;
 } session;
 
-typedef struct packetstruct {
+/*typedef struct packetstruct {
 	struct packetstruct *next;
 	uint8_t *startptr;
 	uint32_t bytesleft;
 	uint8_t *packet;
 } packetstruct;
+*/
 
 typedef struct matoclserventry {
 	uint8_t registered;
@@ -163,6 +165,8 @@ static matoclserventry *matoclservhead=NULL;
 static int lsock;
 static int32_t lsockpdescpos;
 static int exiting,starting;
+
+//extern matomaserventry *matomaservhead; //yujy
 
 // from config
 static char *ListenHost;
@@ -2033,7 +2037,7 @@ void matoclserv_fuse_mknod(matoclserventry *eptr,const uint8_t *data,uint32_t le
 		return;
 	}
 	msgid = get32bit(&data);
-	inode = get32bit(&data);
+	inode = get32bit(&data); //parent id
 	nleng = get8bit(&data);
 	if (length!=24U+nleng) {
 		syslog(LOG_NOTICE,"CLTOMA_FUSE_MKNOD - wrong size (%"PRIu32":nleng=%"PRIu8")",length,nleng);
@@ -2049,6 +2053,24 @@ void matoclserv_fuse_mknod(matoclserventry *eptr,const uint8_t *data,uint32_t le
 	matoclserv_ugid_remap(eptr,&uid,&gid);
 	rdev = get32bit(&data);
 	status = fs_mknod(eptr->sesdata->rootinode,eptr->sesdata->sesflags,inode,nleng,name,type,mode,uid,gid,auid,agid,rdev,&newinode,attr);
+    syslog(LOG_NOTICE,"begin my part  yujy");
+    uint8_t *maptr;
+    matomaserventry * maeptr = matomaservhead;
+    syslog(LOG_NOTICE,"in matoclserv.c set maeptr succeed  yujy");
+    if(maeptr) 
+        syslog(LOG_NOTICE,"in CLTOMA_FUSE_MKNOD matomaserhead is not NULL, the socket is %u yujy", maeptr->sock);
+    else 
+        syslog(LOG_NOTICE,"in CLTOMA_FUSE_MKNOD matomaserhead is NULL yujy");
+    maptr = matomaserv_createpacket(maeptr, MATOMA_FUSE_MKNOD, 20+nleng);
+    put32bit(&maptr, inode);
+    put8bit(&maptr, nleng);
+    memcpy(maptr, name, nleng);
+    maptr+=nleng;
+    put8bit(&maptr, type);
+    put16bit(&maptr, mode);
+    put32bit(&maptr, uid);
+    put32bit(&maptr, gid);
+    put32bit(&maptr, rdev);
     //operate the metadata locally
     //When metadata is modified, add an packet to send to another MDS. Simulate the client?
     //maptr = matomaserv_createpacket(maeptr, MATOMA_FUSE_MKNOD,size);
