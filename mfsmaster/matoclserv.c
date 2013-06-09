@@ -2030,6 +2030,7 @@ void matoclserv_fuse_mknod(matoclserventry *eptr,const uint8_t *data,uint32_t le
 	uint8_t attr[35];
 	uint32_t msgid;
 	uint8_t *ptr;
+    uint8_t *datatmp = data;
     syslog(LOG_NOTICE,"in CLTOMA_FUSE_MKNOD  yujy");
 	uint8_t status;
 	if (length<24) {
@@ -2037,7 +2038,7 @@ void matoclserv_fuse_mknod(matoclserventry *eptr,const uint8_t *data,uint32_t le
 		eptr->mode = KILL;
 		return;
 	}
-	msgid = get32bit(&data);
+	msgid = get32bit(&data); //packet id
 	inode = get32bit(&data); //parent id
 	nleng = get8bit(&data);
 	if (length!=24U+nleng) {
@@ -2062,17 +2063,20 @@ void matoclserv_fuse_mknod(matoclserventry *eptr,const uint8_t *data,uint32_t le
     if(maeptr) {
         //maptr = matomaserv_createpacket(maeptr, MATOMA_FUSE_MKNOD, 20+nleng);
         syslog(LOG_NOTICE,"in CLTOMA_FUSE_MKNOD masterconnsingleton is not NULL, the socket is %u yujy", maeptr->sock);
-        maptr = masterconn_createpacket(maeptr, MATOMA_FUSE_MKNOD, 20+nleng);
+        maptr = masterconn_createpacket(maeptr, MATOMA_FUSE_MKNOD, 4+20+nleng);
+        memcpy(maptr,datatmp,24+nleng);
+        maptr += 24+nleng;
         syslog(LOG_NOTICE,"in CLTOMA_FUSE_MKNOD create a masterconn packet");
-        put32bit(&maptr, inode);
-        put8bit(&maptr, nleng);
-        memcpy(maptr, name, nleng);
-        maptr+=nleng;
-        put8bit(&maptr, type);
-        put16bit(&maptr, mode);
-        put32bit(&maptr, uid);
-        put32bit(&maptr, gid);
-        put32bit(&maptr, rdev); 
+        //put32bit(&maptr,msgid); //packet id
+        //put32bit(&maptr, inode);
+        //put8bit(&maptr, nleng);
+        //memcpy(maptr, name, nleng);
+        //maptr+=nleng;
+        //put8bit(&maptr, type);
+        //put16bit(&maptr, mode);
+        //put32bit(&maptr, uid);
+        //put32bit(&maptr, gid);
+        //put32bit(&maptr, rdev); 
     }
     else 
         syslog(LOG_NOTICE,"in CLTOMA_FUSE_MKNOD matomaserhead is NULL yujy");
@@ -2081,7 +2085,7 @@ void matoclserv_fuse_mknod(matoclserventry *eptr,const uint8_t *data,uint32_t le
     //When metadata is modified, add an packet to send to another MDS. Simulate the client?
     //maptr = matomaserv_createpacket(maeptr, MATOMA_FUSE_MKNOD,size);
 	ptr = matoclserv_createpacket(eptr,MATOCL_FUSE_MKNOD,(status!=STATUS_OK)?5:43);
-	put32bit(&ptr,msgid);
+	put32bit(&ptr,msgid); //packet id
 	if (status!=STATUS_OK) {
 		put8bit(&ptr,status);
 	} else {
@@ -3874,8 +3878,8 @@ void matoclserv_read(matoclserventry *eptr) {
 
 		if (eptr->mode==DATA) {
 			ptr = eptr->hdrbuff;
-			type = get32bit(&ptr);
-			size = get32bit(&ptr);
+			type = get32bit(&ptr); //cmd type
+			size = get32bit(&ptr); //header size
 
 			eptr->mode=HEADER;
 			eptr->inputpacket.bytesleft = 8;

@@ -56,7 +56,7 @@ matomaserv.o: matomaserv.c ../config.h /usr/include/time.h \
  /usr/include/asm-generic/sockios.h \
  /usr/include/i386-linux-gnu/bits/socket2.h \
  /usr/include/i386-linux-gnu/bits/in.h ../mfscommon/MFSCommunication.h \
- ../mfscommon/datapack.h matomaserv.h ../mfscommon/crc.h \
+ ../mfscommon/datapack.h matomaserv.h matoclserv.h ../mfscommon/crc.h \
  ../mfscommon/cfg.h ../mfscommon/main.h /usr/include/poll.h \
  /usr/include/i386-linux-gnu/sys/poll.h \
  /usr/include/i386-linux-gnu/bits/poll.h ../mfscommon/sockets.h \
@@ -223,6 +223,8 @@ matomaserv.o: matomaserv.c ../config.h /usr/include/time.h \
 ../mfscommon/datapack.h:
 
 matomaserv.h:
+
+matoclserv.h:
 
 ../mfscommon/crc.h:
 

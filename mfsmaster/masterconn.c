@@ -542,7 +542,7 @@ void masterconn_reload(void) {
 	free(MasterPort);
 	free(BindHost);
 
-	MasterHost = cfg_getstr("MASTER_HOST2","mfsmaster2"); //yujy
+	MasterHost = cfg_getstr("MASTER_HOST2","mfsmaster"); //yujy
 	MasterPort = cfg_getstr("MASTER_PORT2","9494");
 	BindHost = cfg_getstr("BIND_HOST","*");
 
@@ -573,7 +573,7 @@ int masterconn_init(void) {
     syslog(LOG_WARNING,"in masterconn connect init yujy"); //yujy
 
 	ReconnectionDelay = cfg_getuint32("MASTER_RECONNECTION_DELAY",5);
-	MasterHost = cfg_getstr("MATOMA_LISTEN_HOST2","mfsmaster2"); //yujy  connect to ma2
+	MasterHost = cfg_getstr("MATOMA_LISTEN_HOST2","mfsmaster"); //yujy  connect to ma2
 	MasterPort = cfg_getstr("MATOMA_LISTEN_PORT2","9494");
 	BindHost = cfg_getstr("BIND_HOST","*");
 	Timeout = cfg_getuint32("MASTER_TIMEOUT",10);

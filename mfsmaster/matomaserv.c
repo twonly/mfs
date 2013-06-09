@@ -35,6 +35,7 @@
 
 #include "datapack.h"
 #include "matomaserv.h"
+#include "matoclserv.h"
 #include "crc.h"
 #include "cfg.h"
 #include "main.h"
@@ -480,12 +481,53 @@ void matomaserv_gotpacket(matomaserventry *eptr,uint32_t type,const uint8_t *dat
 			break;
         case MATOMA_FUSE_MKNOD: //for temporary use
             syslog(LOG_NOTICE, "got MATOMA_FUSE_MKNOD");
-            int tmptmp = get32bit(&data);
-            int tmptmp2 = get8bit(&data);
-            //int tmptmp = get32bit(&data);
-            syslog(LOG_NOTICE, "got inode %u, nleng %u", tmptmp, tmptmp2);
+           // int packid = get32bit(&data);
+           // int tmptmp = get32bit(&data);
+           // int tmptmp2 = get8bit(&data);
+            //syslog(LOG_NOTICE, "got packet id %u, inode %u, nleng %u", packid, tmptmp, tmptmp2);
+            uint32_t inode,uid,gid,auid,agid,rdev;
+            uint8_t nleng;
+            uint8_t *name;
+            uint8_t type;
+            uint16_t mode;
+            uint32_t newinode;
+            uint8_t attr[35];
+            uint32_t msgid;
+            uint8_t *ptr;
+            syslog(LOG_NOTICE,"in MATOMA_FUSE_MKNOD  yujy");
+            uint8_t status;
+            if (length<24) {
+                syslog(LOG_NOTICE,"MATOMA_FUSE_MKNOD - wrong size (%"PRIu32")",length);
+                eptr->mode = KILL;
+                return;
+            }
+            msgid = get32bit(&data); //packet id
+            inode = get32bit(&data); //parent id
+            nleng = get8bit(&data);
+            if (length!=24U+nleng) {
+                syslog(LOG_NOTICE,"MATOMA_FUSE_MKNOD - wrong size (%"PRIu32":nleng=%"PRIu8")",length,nleng);
+                eptr->mode = KILL;
+                return;
+            }
+            name = data;
+            name[0]='x';
+            data += nleng;
+            type = get8bit(&data);
+            mode = get16bit(&data);
+            auid = uid = get32bit(&data);
+            agid = gid = get32bit(&data);
+            //matoclserv_ugid_remap(eptr,&uid,&gid);
+            rdev = get32bit(&data);
+            status = fs_mknod(1,0,inode,nleng,name,type,mode,uid,gid,auid,agid,rdev,&newinode,attr);
+            syslog(LOG_NOTICE,"MATOMA_FUSE_MKNOD - after fs_mknod");
+            if (status!=STATUS_OK) {
+                syslog(LOG_NOTICE,"MATOMA_FUSE_MKNOD - status is not ok %u", status);
+                //#define ERROR_ENOENT           3	// No such file or directory
+            } else {
+                syslog(LOG_NOTICE,"MATOMA_FUSE_MKNOD - status is ok, newinode is  %u", newinode);
+            }
             break;
-        //case MATOMA_DOWNLOAD_START:
+            //case MATOMA_DOWNLOAD_START:
             //    matomaserv_download_start(eptr,data,length);
             //    break;
             //case MATOMA_DOWNLOAD_DATA:
@@ -740,7 +782,7 @@ void matomaserv_reload(void) {
 	oldListenHost = ListenHost;
 	oldListenPort = ListenPort;
 	ListenHost = cfg_getstr("MATOMA_LISTEN_HOST","*");
-	ListenPort = cfg_getstr("MATOMA_LISTEN_PORT2","9495");
+	ListenPort = cfg_getstr("MATOMA_LISTEN_PORT2","9494");
 	if (strcmp(oldListenHost,ListenHost)==0 && strcmp(oldListenPort,ListenPort)==0) {
 		free(oldListenHost);
 		free(oldListenPort);
@@ -787,7 +829,7 @@ void matomaserv_reload(void) {
 
 int matomaserv_init(void) {
 	ListenHost = cfg_getstr("MATOMA_LISTEN_HOST","*");
-	ListenPort = cfg_getstr("MATOMA_LISTEN_PORT2","9495"); //yujy  listen to master2 ub-2
+	ListenPort = cfg_getstr("MATOMA_LISTEN_PORT2","9494"); //yujy  listen to master2 ub-2
     syslog(LOG_WARNING,"in matomaserv_init yujy");
 
 	lsock = tcpsocket();

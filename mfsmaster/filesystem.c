@@ -4098,11 +4098,13 @@ uint8_t fs_mknod(uint32_t rootinode,uint8_t sesflags,uint32_t parent,uint16_t nl
 	if (rootinode==MFS_ROOT_ID) {
 		wd = fsnodes_id_to_node(parent);
 		if (!wd) {
+            syslog(LOG_WARNING, "ENOENT 1");
 			return ERROR_ENOENT;
 		}
 	} else {
 		rn = fsnodes_id_to_node(rootinode);
 		if (!rn || rn->type!=TYPE_DIRECTORY) {
+            syslog(LOG_WARNING, "ENOENT 2");
 			return ERROR_ENOENT;
 		}
 		if (parent==MFS_ROOT_ID) {
@@ -4111,6 +4113,7 @@ uint8_t fs_mknod(uint32_t rootinode,uint8_t sesflags,uint32_t parent,uint16_t nl
 		} else {
 			wd = fsnodes_id_to_node(parent);
 			if (!wd) {
+                syslog(LOG_WARNING, "ENOENT 3");
 				return ERROR_ENOENT;
 			}
 			if (!fsnodes_isancestor(rn,wd)) {

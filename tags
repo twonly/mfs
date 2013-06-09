@@ -1562,7 +1562,7 @@ MaxDelSoftLimit	mfsmaster/chunks.c	/^static uint32_t MaxDelSoftLimit;$/;"	v	file
 MaxPacketSize	mfschunkserver/csserv.c	57;"	d	file:
 MaxPacketSize	mfschunkserver/masterconn.c	51;"	d	file:
 MaxPacketSize	mfsmaster/masterconn.c	45;"	d	file:
-MaxPacketSize	mfsmaster/matoclserv.c	55;"	d	file:
+MaxPacketSize	mfsmaster/matoclserv.c	56;"	d	file:
 MaxPacketSize	mfsmaster/matocsserv.c	48;"	d	file:
 MaxPacketSize	mfsmaster/matomaserv.c	45;"	d	file:
 MaxPacketSize	mfsmaster/matomlserv.c	45;"	d	file:
@@ -2092,7 +2092,7 @@ SESFLAG_MAPALL	mfscommon/MFSCommunication.h	268;"	d
 SESFLAG_NEG_STRINGS	mfscommon/MFSCommunication.h	280;"	d
 SESFLAG_POS_STRINGS	mfscommon/MFSCommunication.h	270;"	d
 SESFLAG_READONLY	mfscommon/MFSCommunication.h	264;"	d
-SESSION_STATS	mfsmaster/matoclserv.c	62;"	d	file:
+SESSION_STATS	mfsmaster/matoclserv.c	63;"	d	file:
 SESSION_STATS	mfsmaster/matottserv.c	61;"	d	file:
 SET_ATIME_FLAG	mfscommon/MFSCommunication.h	194;"	d
 SET_DELETE_FLAG	mfscommon/MFSCommunication.h	196;"	d
@@ -2727,7 +2727,7 @@ bin_SCRIPTS	mfsmount/Makefile	/^bin_SCRIPTS = \\$/;"	m
 bindhost	mfsmount/main.c	/^	char *bindhost;$/;"	m	struct:mfsopts	file:
 bindhostname	mfsmount/mastercomm.c	/^	char *bindhostname;$/;"	m	struct:connect_args_t	file:
 bindip	mfschunkserver/masterconn.c	/^	uint32_t bindip;$/;"	m	struct:masterconn	file:
-bindip	mfsmaster/masterconn.c	/^	uint32_t bindip;$/;"	m	struct:masterconn	file:
+bindip	mfsmaster/masterconn.h	/^	uint32_t bindip;$/;"	m	struct:masterconn
 bindip	mfsmetalogger/masterconn.c	/^	uint32_t bindip;$/;"	m	struct:masterconn	file:
 bindir	Makefile	/^bindir = ${exec_prefix}\/bin$/;"	m
 bindir	doc/Makefile	/^bindir = ${exec_prefix}\/bin$/;"	m
@@ -2835,7 +2835,6 @@ builddir	mfsmount/Makefile	/^builddir = .$/;"	m
 bytesleft	mfschunkserver/csserv.c	/^	uint32_t bytesleft;$/;"	m	struct:packetstruct	file:
 bytesleft	mfschunkserver/masterconn.c	/^	uint32_t bytesleft;$/;"	m	struct:packetstruct	file:
 bytesleft	mfschunkserver/replicator.c	/^	uint32_t bytesleft;$/;"	m	struct:_repsrc	file:
-bytesleft	mfsmaster/masterconn.c	/^	uint32_t bytesleft;$/;"	m	struct:packetstruct	file:
 bytesleft	mfsmaster/matocsserv.c	/^	uint32_t bytesleft;$/;"	m	struct:packetstruct	file:
 bytesleft	mfsmaster/matomaserv.h	/^	uint32_t bytesleft;$/;"	m	struct:packetstruct
 bytesleft	mfsmaster/matomlserv.c	/^	uint32_t bytesleft;$/;"	m	struct:packetstruct	file:
@@ -4156,7 +4155,7 @@ hddstats	mfschunkserver/hddspacemgr.c	/^} hddstats;$/;"	t	typeref:struct:hddstat
 hdrbuff	mfschunkserver/csserv.c	/^	uint8_t hdrbuff[8];$/;"	m	struct:csserventry	file:
 hdrbuff	mfschunkserver/masterconn.c	/^	uint8_t hdrbuff[8];$/;"	m	struct:masterconn	file:
 hdrbuff	mfschunkserver/replicator.c	/^	uint8_t hdrbuff[8];$/;"	m	struct:_repsrc	file:
-hdrbuff	mfsmaster/masterconn.c	/^	uint8_t hdrbuff[8];$/;"	m	struct:masterconn	file:
+hdrbuff	mfsmaster/masterconn.h	/^	uint8_t hdrbuff[8];$/;"	m	struct:masterconn
 hdrbuff	mfsmaster/matoclserv.c	/^	uint8_t hdrbuff[8];$/;"	m	struct:matoclserventry	file:
 hdrbuff	mfsmaster/matocsserv.c	/^	uint8_t hdrbuff[8];$/;"	m	struct:matocsserventry	file:
 hdrbuff	mfsmaster/matomaserv.h	/^	uint8_t hdrbuff[8];$/;"	m	struct:matomaserventry
@@ -4337,7 +4336,7 @@ inodehashtab	mfsmount/dirattrcache.c	/^	const uint8_t **inodehashtab;$/;"	m	stru
 inodes	mfsmaster/filesystem.c	/^	uint32_t inodes;$/;"	m	struct:_statsrecord	file:
 inputpacket	mfschunkserver/csserv.c	/^	packetstruct inputpacket;$/;"	m	struct:csserventry	file:
 inputpacket	mfschunkserver/masterconn.c	/^	packetstruct inputpacket;$/;"	m	struct:masterconn	file:
-inputpacket	mfsmaster/masterconn.c	/^	packetstruct inputpacket;$/;"	m	struct:masterconn	file:
+inputpacket	mfsmaster/masterconn.h	/^	packetstruct inputpacket;$/;"	m	struct:masterconn
 inputpacket	mfsmaster/matoclserv.c	/^	packetstruct inputpacket;$/;"	m	struct:matoclserventry	file:
 inputpacket	mfsmaster/matocsserv.c	/^	packetstruct inputpacket;$/;"	m	struct:matocsserventry	file:
 inputpacket	mfsmaster/matomaserv.h	/^	packetstruct inputpacket;$/;"	m	struct:matomaserventry
@@ -4473,7 +4472,7 @@ lasthouropstats	mfsmaster/matottserv.c	/^	uint32_t lasthouropstats[SESSION_STATS
 lastlogversion	mfsmaster/masterconn.c	/^static uint64_t lastlogversion=0;$/;"	v	file:
 lastlogversion	mfsmetalogger/masterconn.c	/^static uint64_t lastlogversion=0;$/;"	v	file:
 lastread	mfschunkserver/masterconn.c	/^	uint32_t lastread,lastwrite;$/;"	m	struct:masterconn	file:
-lastread	mfsmaster/masterconn.c	/^	uint32_t lastread,lastwrite;$/;"	m	struct:masterconn	file:
+lastread	mfsmaster/masterconn.h	/^	uint32_t lastread,lastwrite;$/;"	m	struct:masterconn
 lastread	mfsmaster/matoclserv.c	/^	uint32_t lastread,lastwrite;		\/\/time of last activity$/;"	m	struct:matoclserventry	file:
 lastread	mfsmaster/matocsserv.c	/^	uint32_t lastread,lastwrite;$/;"	m	struct:matocsserventry	file:
 lastread	mfsmaster/matomaserv.h	/^	uint32_t lastread,lastwrite;$/;"	m	struct:matomaserventry
@@ -4483,7 +4482,7 @@ lastread	mfsmetalogger/masterconn.c	/^	uint32_t lastread,lastwrite;$/;"	m	struct
 lastrefresh	mfschunkserver/hddspacemgr.c	/^	uint32_t lastrefresh;$/;"	m	struct:folder	file:
 lastv	mfsmetarestore/restore.c	/^static uint64_t v=0,lastv=0;$/;"	v	file:
 lastwrite	mfschunkserver/masterconn.c	/^	uint32_t lastread,lastwrite;$/;"	m	struct:masterconn	file:
-lastwrite	mfsmaster/masterconn.c	/^	uint32_t lastread,lastwrite;$/;"	m	struct:masterconn	file:
+lastwrite	mfsmaster/masterconn.h	/^	uint32_t lastread,lastwrite;$/;"	m	struct:masterconn
 lastwrite	mfsmaster/matoclserv.c	/^	uint32_t lastread,lastwrite;		\/\/time of last activity$/;"	m	struct:matoclserventry	file:
 lastwrite	mfsmaster/matocsserv.c	/^	uint32_t lastread,lastwrite;$/;"	m	struct:matocsserventry	file:
 lastwrite	mfsmaster/matomaserv.h	/^	uint32_t lastread,lastwrite;$/;"	m	struct:matomaserventry
@@ -4646,12 +4645,12 @@ master_stats_add	mfsmount/mastercomm.c	/^void master_stats_add(uint8_t id,uint64
 master_stats_inc	mfsmount/mastercomm.c	/^void master_stats_inc(uint8_t id) {$/;"	f
 master_statsptr_init	mfsmount/mastercomm.c	/^void master_statsptr_init(void) {$/;"	f
 masteraddrvalid	mfschunkserver/masterconn.c	/^	uint8_t masteraddrvalid;$/;"	m	struct:masterconn	file:
-masteraddrvalid	mfsmaster/masterconn.c	/^	uint8_t masteraddrvalid;$/;"	m	struct:masterconn	file:
+masteraddrvalid	mfsmaster/masterconn.h	/^	uint8_t masteraddrvalid;$/;"	m	struct:masterconn
 masteraddrvalid	mfsmetalogger/masterconn.c	/^	uint8_t masteraddrvalid;$/;"	m	struct:masterconn	file:
 masterconn	mfschunkserver/masterconn.c	/^typedef struct masterconn {$/;"	s	file:
 masterconn	mfschunkserver/masterconn.c	/^} masterconn;$/;"	t	typeref:struct:masterconn	file:
-masterconn	mfsmaster/masterconn.c	/^typedef struct masterconn {$/;"	s	file:
-masterconn	mfsmaster/masterconn.c	/^} masterconn;$/;"	t	typeref:struct:masterconn	file:
+masterconn	mfsmaster/masterconn.h	/^typedef struct masterconn {$/;"	s
+masterconn	mfsmaster/masterconn.h	/^} masterconn;$/;"	t	typeref:struct:masterconn
 masterconn	mfsmetalogger/masterconn.c	/^typedef struct masterconn {$/;"	s	file:
 masterconn	mfsmetalogger/masterconn.c	/^} masterconn;$/;"	t	typeref:struct:masterconn	file:
 masterconn_attach_packet	mfschunkserver/masterconn.c	/^void masterconn_attach_packet(masterconn *eptr,void *packet) {$/;"	f
@@ -4732,7 +4731,7 @@ masterconn_write	mfschunkserver/masterconn.c	/^void masterconn_write(masterconn 
 masterconn_write	mfsmaster/masterconn.c	/^void masterconn_write(masterconn *eptr) {$/;"	f
 masterconn_write	mfsmetalogger/masterconn.c	/^void masterconn_write(masterconn *eptr) {$/;"	f
 masterconnsingleton	mfschunkserver/masterconn.c	/^static masterconn *masterconnsingleton=NULL;$/;"	v	file:
-masterconnsingleton	mfsmaster/masterconn.c	/^static masterconn *masterconnsingleton=NULL; \/\/singleton means a metalogger can only connect to one MASTER$/;"	v	file:
+masterconnsingleton	mfsmaster/masterconn.c	/^masterconn *masterconnsingleton=NULL; \/\/singleton means a metalogger can only connect to one MASTER$/;"	v
 masterconnsingleton	mfsmetalogger/masterconn.c	/^static masterconn *masterconnsingleton=NULL;$/;"	v	file:
 masterhost	mfscgi/mfs.cgi.in	/^		masterhost = '127.0.0.1'$/;"	v
 masterhost	mfscgi/mfs.cgi.in	/^		masterhost = fields.getvalue("masterhost")$/;"	v
@@ -4744,7 +4743,7 @@ masterinfoattr	mfsmount/mfs_fuse.c	/^static uint8_t masterinfoattr[35]={'f', 0x0
 masterinfoattr	mfsmount/mfs_meta_fuse.c	/^static uint8_t masterinfoattr[35]={'f', 0x01,0x24, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,1, 0,0,0,0,0,0,0,10};$/;"	v	file:
 masterinfoattr	mfsmount/mfs_meta_fuse.c	/^static uint8_t masterinfoattr[35]={'f', 0x01,0x24, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,1, 0,0,0,0,0,0,0,14};$/;"	v	file:
 masterip	mfschunkserver/masterconn.c	/^	uint32_t masterip;$/;"	m	struct:masterconn	file:
-masterip	mfsmaster/masterconn.c	/^	uint32_t masterip;$/;"	m	struct:masterconn	file:
+masterip	mfsmaster/masterconn.h	/^	uint32_t masterip;$/;"	m	struct:masterconn
 masterip	mfsmetalogger/masterconn.c	/^	uint32_t masterip;$/;"	m	struct:masterconn	file:
 masterip	mfsmount/mastercomm.c	/^static uint32_t masterip=0;$/;"	v	file:
 mastername	mfscgi/mfs.cgi.in	/^		mastername = 'MooseFS'$/;"	v
@@ -4753,7 +4752,7 @@ mastername	mfscgi/mfs.cgi.in	/^	mastername = 'MooseFS'$/;"	v
 masterport	mfscgi/mfs.cgi.in	/^	masterport = 9421$/;"	v
 masterport	mfscgi/mfs.cgi.in	/^	masterport = int(fields.getvalue("masterport"))$/;"	v
 masterport	mfschunkserver/masterconn.c	/^	uint16_t masterport;$/;"	m	struct:masterconn	file:
-masterport	mfsmaster/masterconn.c	/^	uint16_t masterport;$/;"	m	struct:masterconn	file:
+masterport	mfsmaster/masterconn.h	/^	uint16_t masterport;$/;"	m	struct:masterconn
 masterport	mfsmetalogger/masterconn.c	/^	uint16_t masterport;$/;"	m	struct:masterconn	file:
 masterport	mfsmount/main.c	/^	char *masterport;$/;"	m	struct:mfsopts	file:
 masterport	mfsmount/mastercomm.c	/^static uint16_t masterport=0;$/;"	v	file:
@@ -5022,7 +5021,7 @@ matomaserv_term	mfsmaster/matomaserv.c	/^void matomaserv_term(void) {$/;"	f
 matomaserv_write	mfsmaster/matomaserv.c	/^void matomaserv_write(matomaserventry *eptr) { \/\/from master to metalogger$/;"	f
 matomaserventry	mfsmaster/matomaserv.h	/^typedef struct matomaserventry {$/;"	s
 matomaserventry	mfsmaster/matomaserv.h	/^} matomaserventry;$/;"	t	typeref:struct:matomaserventry
-matomaservhead	mfsmaster/matomaserv.h	/^static matomaserventry *matomaservhead=NULL;$/;"	v
+matomaservhead	mfsmaster/matomaserv.c	/^matomaserventry *matomaservhead=NULL;$/;"	v
 matomlserv_beforeclose	mfsmaster/matomlserv.c	/^void matomlserv_beforeclose(matomlserventry *eptr) {$/;"	f
 matomlserv_broadcast_logrotate	mfsmaster/matomlserv.c	/^void matomlserv_broadcast_logrotate() {$/;"	f
 matomlserv_broadcast_logstring	mfsmaster/matomlserv.c	/^void matomlserv_broadcast_logstring(uint64_t version,uint8_t *logstr,uint32_t logstrsize) {$/;"	f
@@ -5244,7 +5243,7 @@ mode	mfscommon/charts.h	/^	uint8_t mode;$/;"	m	struct:_estatdef
 mode	mfscommon/charts.h	/^	uint8_t mode;$/;"	m	struct:_statdef
 mode	mfscommon/main.c	/^	int mode;$/;"	m	struct:timeentry	file:
 mode	mfsmaster/filesystem.c	/^	uint16_t mode;	\/\/ only 12 lowest bits are used for mode, in unix standard upper 4 are used for object type, but since there is field "type" this bits can be used as extra flags$/;"	m	struct:_fsnode	file:
-mode	mfsmaster/masterconn.c	/^	int mode;$/;"	m	struct:masterconn	file:
+mode	mfsmaster/masterconn.h	/^	int mode;$/;"	m	struct:masterconn
 mode	mfsmaster/matoclserv.c	/^	uint8_t mode;				\/\/0 - not active, 1 - read header, 2 - read packet$/;"	m	struct:matoclserventry	file:
 mode	mfsmaster/matocsserv.c	/^	uint8_t mode;$/;"	m	struct:matocsserventry	file:
 mode	mfsmaster/matomaserv.h	/^	uint8_t mode;$/;"	m	struct:matomaserventry
@@ -5333,7 +5332,6 @@ next	mfsmaster/filesystem.c	/^	struct _sessionidrec *next;$/;"	m	struct:_session
 next	mfsmaster/filesystem.c	/^	struct _sessionidrec_bucket *next;$/;"	m	struct:_sessionidrec_bucket	typeref:struct:_sessionidrec_bucket::_sessionidrec_bucket	file:
 next	mfsmaster/filesystem.c	/^	struct _xattr_data_entry **prev,*next;$/;"	m	struct:_xattr_data_entry	typeref:struct:_xattr_data_entry::	file:
 next	mfsmaster/filesystem.c	/^	struct _xattr_inode_entry *next;$/;"	m	struct:_xattr_inode_entry	typeref:struct:_xattr_inode_entry::_xattr_inode_entry	file:
-next	mfsmaster/masterconn.c	/^	struct packetstruct *next;$/;"	m	struct:packetstruct	typeref:struct:packetstruct::packetstruct	file:
 next	mfsmaster/matoclserv.c	/^	struct chunklist *next;$/;"	m	struct:chunklist	typeref:struct:chunklist::chunklist	file:
 next	mfsmaster/matoclserv.c	/^	struct filelist *next;$/;"	m	struct:filelist	typeref:struct:filelist::filelist	file:
 next	mfsmaster/matoclserv.c	/^	struct matoclserventry *next;$/;"	m	struct:matoclserventry	typeref:struct:matoclserventry::matoclserventry	file:
@@ -5448,7 +5446,7 @@ out	mfscgi/mfs.cgi.in	/^		out = []$/;"	v
 out	mfscgi/mfs.cgi.in	/^	out = []$/;"	v
 outputhead	mfschunkserver/csserv.c	/^	packetstruct *outputhead,**outputtail;$/;"	m	struct:csserventry	file:
 outputhead	mfschunkserver/masterconn.c	/^	packetstruct *outputhead,**outputtail;$/;"	m	struct:masterconn	file:
-outputhead	mfsmaster/masterconn.c	/^	packetstruct *outputhead,**outputtail;$/;"	m	struct:masterconn	file:
+outputhead	mfsmaster/masterconn.h	/^	packetstruct *outputhead,**outputtail;$/;"	m	struct:masterconn
 outputhead	mfsmaster/matoclserv.c	/^	packetstruct *outputhead,**outputtail;$/;"	m	struct:matoclserventry	file:
 outputhead	mfsmaster/matocsserv.c	/^	packetstruct *outputhead,**outputtail;$/;"	m	struct:matocsserventry	file:
 outputhead	mfsmaster/matomaserv.h	/^	packetstruct *outputhead,**outputtail;$/;"	m	struct:matomaserventry
@@ -5457,7 +5455,7 @@ outputhead	mfsmaster/matottserv.c	/^	packetstruct *outputhead,**outputtail;$/;"	
 outputhead	mfsmetalogger/masterconn.c	/^	packetstruct *outputhead,**outputtail;$/;"	m	struct:masterconn	file:
 outputtail	mfschunkserver/csserv.c	/^	packetstruct *outputhead,**outputtail;$/;"	m	struct:csserventry	file:
 outputtail	mfschunkserver/masterconn.c	/^	packetstruct *outputhead,**outputtail;$/;"	m	struct:masterconn	file:
-outputtail	mfsmaster/masterconn.c	/^	packetstruct *outputhead,**outputtail;$/;"	m	struct:masterconn	file:
+outputtail	mfsmaster/masterconn.h	/^	packetstruct *outputhead,**outputtail;$/;"	m	struct:masterconn
 outputtail	mfsmaster/matoclserv.c	/^	packetstruct *outputhead,**outputtail;$/;"	m	struct:matoclserventry	file:
 outputtail	mfsmaster/matocsserv.c	/^	packetstruct *outputhead,**outputtail;$/;"	m	struct:matocsserventry	file:
 outputtail	mfsmaster/matomaserv.h	/^	packetstruct *outputhead,**outputtail;$/;"	m	struct:matomaserventry
@@ -5472,7 +5470,6 @@ p	mfsmount/mfs_meta_fuse.c	/^	uint8_t *p;$/;"	m	struct:_dirbuf	file:
 packet	mfschunkserver/csserv.c	/^	uint8_t *packet;$/;"	m	struct:packetstruct	file:
 packet	mfschunkserver/masterconn.c	/^	uint8_t *packet;$/;"	m	struct:packetstruct	file:
 packet	mfschunkserver/replicator.c	/^	uint8_t *packet;$/;"	m	struct:_repsrc	file:
-packet	mfsmaster/masterconn.c	/^	uint8_t *packet;$/;"	m	struct:packetstruct	file:
 packet	mfsmaster/matocsserv.c	/^	uint8_t *packet;$/;"	m	struct:packetstruct	file:
 packet	mfsmaster/matomaserv.h	/^	uint8_t *packet;$/;"	m	struct:packetstruct
 packet	mfsmaster/matomlserv.c	/^	uint8_t *packet;$/;"	m	struct:packetstruct	file:
@@ -5483,8 +5480,6 @@ packetstruct	mfschunkserver/csserv.c	/^typedef struct packetstruct {$/;"	s	file:
 packetstruct	mfschunkserver/csserv.c	/^} packetstruct;$/;"	t	typeref:struct:packetstruct	file:
 packetstruct	mfschunkserver/masterconn.c	/^typedef struct packetstruct {$/;"	s	file:
 packetstruct	mfschunkserver/masterconn.c	/^} packetstruct;$/;"	t	typeref:struct:packetstruct	file:
-packetstruct	mfsmaster/masterconn.c	/^typedef struct packetstruct {$/;"	s	file:
-packetstruct	mfsmaster/masterconn.c	/^} packetstruct;$/;"	t	typeref:struct:packetstruct	file:
 packetstruct	mfsmaster/matocsserv.c	/^typedef struct packetstruct {$/;"	s	file:
 packetstruct	mfsmaster/matocsserv.c	/^} packetstruct;$/;"	t	typeref:struct:packetstruct	file:
 packetstruct	mfsmaster/matomaserv.h	/^typedef struct packetstruct {$/;"	s
@@ -5521,7 +5516,7 @@ path	mfsmount/symlinkcache.c	/^	uint8_t* path[HASH_BUCKET_SIZE];$/;"	m	struct:_h
 pathbuf	mfsmount/mfs_meta_fuse.c	/^} pathbuf;$/;"	t	typeref:struct:_pathbuf	file:
 pdescpos	mfschunkserver/csserv.c	/^	int32_t pdescpos;$/;"	m	struct:csserventry	file:
 pdescpos	mfschunkserver/masterconn.c	/^	int32_t pdescpos;$/;"	m	struct:masterconn	file:
-pdescpos	mfsmaster/masterconn.c	/^	int32_t pdescpos;$/;"	m	struct:masterconn	file:
+pdescpos	mfsmaster/masterconn.h	/^	int32_t pdescpos;$/;"	m	struct:masterconn
 pdescpos	mfsmaster/matoclserv.c	/^	int32_t pdescpos;$/;"	m	struct:matoclserventry	file:
 pdescpos	mfsmaster/matocsserv.c	/^	int32_t pdescpos;$/;"	m	struct:matocsserventry	file:
 pdescpos	mfsmaster/matomaserv.h	/^	int32_t pdescpos;$/;"	m	struct:matomaserventry
@@ -6035,7 +6030,7 @@ snapshot	mfsmount/mfstools.c	/^int snapshot(const char *dstname,char * const *sr
 sock	mfschunkserver/csserv.c	/^	int sock;$/;"	m	struct:csserventry	file:
 sock	mfschunkserver/masterconn.c	/^	int sock;$/;"	m	struct:masterconn	file:
 sock	mfschunkserver/replicator.c	/^	int sock;$/;"	m	struct:_repsrc	file:
-sock	mfsmaster/masterconn.c	/^	int sock;$/;"	m	struct:masterconn	file:
+sock	mfsmaster/masterconn.h	/^	int sock;$/;"	m	struct:masterconn
 sock	mfsmaster/matoclserv.c	/^	int sock;				\/\/socket number$/;"	m	struct:matoclserventry	file:
 sock	mfsmaster/matocsserv.c	/^	int sock;$/;"	m	struct:matocsserventry	file:
 sock	mfsmaster/matomaserv.h	/^	int sock;$/;"	m	struct:matomaserventry
@@ -6072,7 +6067,6 @@ starting	mfsmaster/matottserv.c	/^static int exiting,starting;$/;"	v	file:
 startptr	mfschunkserver/csserv.c	/^	uint8_t *startptr;$/;"	m	struct:packetstruct	file:
 startptr	mfschunkserver/masterconn.c	/^	uint8_t *startptr;$/;"	m	struct:packetstruct	file:
 startptr	mfschunkserver/replicator.c	/^	uint8_t *startptr;$/;"	m	struct:_repsrc	file:
-startptr	mfsmaster/masterconn.c	/^	uint8_t *startptr;$/;"	m	struct:packetstruct	file:
 startptr	mfsmaster/matocsserv.c	/^	uint8_t *startptr;$/;"	m	struct:packetstruct	file:
 startptr	mfsmaster/matomaserv.h	/^	uint8_t *startptr;$/;"	m	struct:packetstruct
 startptr	mfsmaster/matomlserv.c	/^	uint8_t *startptr;$/;"	m	struct:packetstruct	file:
