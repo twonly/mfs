@@ -2055,7 +2055,7 @@ void matoclserv_fuse_mknod(matoclserventry *eptr,const uint8_t *data,uint32_t le
 	matoclserv_ugid_remap(eptr,&uid,&gid);
 	rdev = get32bit(&data);
 	status = fs_mknod(eptr->sesdata->rootinode,eptr->sesdata->sesflags,inode,nleng,name,type,mode,uid,gid,auid,agid,rdev,&newinode,attr);
-    syslog(LOG_NOTICE,"begin my part  yujy");
+    //syslog(LOG_NOTICE,"begin my part  yujy");
     uint8_t *maptr;
     //matomaserventry * maeptr = matomaservhead;
 	masterconn *maeptr = masterconnsingleton;
@@ -2067,20 +2067,9 @@ void matoclserv_fuse_mknod(matoclserventry *eptr,const uint8_t *data,uint32_t le
         memcpy(maptr,datatmp,24+nleng);
         maptr += 24+nleng;
         syslog(LOG_NOTICE,"in CLTOMA_FUSE_MKNOD create a masterconn packet");
-        //put32bit(&maptr,msgid); //packet id
-        //put32bit(&maptr, inode);
-        //put8bit(&maptr, nleng);
-        //memcpy(maptr, name, nleng);
-        //maptr+=nleng;
-        //put8bit(&maptr, type);
-        //put16bit(&maptr, mode);
-        //put32bit(&maptr, uid);
-        //put32bit(&maptr, gid);
-        //put32bit(&maptr, rdev); 
     }
     else 
         syslog(LOG_NOTICE,"in CLTOMA_FUSE_MKNOD matomaserhead is NULL yujy");
-    
     //operate the metadata locally
     //When metadata is modified, add an packet to send to another MDS. Simulate the client?
     //maptr = matomaserv_createpacket(maeptr, MATOMA_FUSE_MKNOD,size);
@@ -2108,6 +2097,7 @@ void matoclserv_fuse_mkdir(matoclserventry *eptr,const uint8_t *data,uint32_t le
 	uint8_t *ptr;
 	uint8_t status;
 	uint8_t copysgid;
+    uint8_t *datatmp = data;
 	if (length<19) {
 		syslog(LOG_NOTICE,"CLTOMA_FUSE_MKDIR - wrong size (%"PRIu32")",length);
 		eptr->mode = KILL;
@@ -2133,6 +2123,21 @@ void matoclserv_fuse_mkdir(matoclserventry *eptr,const uint8_t *data,uint32_t le
 		copysgid = 0; // by default do not copy sgid bit
 	}
 	status = fs_mkdir(eptr->sesdata->rootinode,eptr->sesdata->sesflags,inode,nleng,name,mode,uid,gid,auid,agid,copysgid,&newinode,attr);
+    uint8_t *maptr;
+    //matomaserventry * maeptr = matomaservhead;
+	masterconn *maeptr = masterconnsingleton;
+    syslog(LOG_NOTICE,"in matoclserv.c set maeptr succeed  yujy");
+    if(maeptr) {
+        //maptr = matomaserv_createpacket(maeptr, MATOMA_FUSE_MKNOD, 20+nleng);
+        syslog(LOG_NOTICE,"in CLTOMA_FUSE_MKDIR masterconnsingleton is not NULL, the socket is %u yujy", maeptr->sock);
+        maptr = masterconn_createpacket(maeptr, MATOMA_FUSE_MKDIR, length);
+        memcpy(maptr,datatmp,length);
+        maptr += length;
+        syslog(LOG_NOTICE,"in CLTOMA_FUSE_MKDIR create a masterconn packet");
+    }
+    else 
+        syslog(LOG_NOTICE,"in CLTOMA_FUSE_MKDIR matomaserhead is NULL yujy");
+    
 	ptr = matoclserv_createpacket(eptr,MATOCL_FUSE_MKDIR,(status!=STATUS_OK)?5:43);
 	put32bit(&ptr,msgid);
 	if (status!=STATUS_OK) {

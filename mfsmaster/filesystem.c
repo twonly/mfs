@@ -3438,8 +3438,8 @@ uint8_t fs_lookup(uint32_t rootinode,uint8_t sesflags,uint32_t parent,uint16_t n
 
 	*inode = 0;
 	memset(attr,0,35);
-	if (rootinode==MFS_ROOT_ID) {
-		rn = root;
+	if (rootinode==MFS_ROOT_ID) { //from session
+		rn = root; //static var
 		wd = fsnodes_id_to_node(parent);
 		if (!wd) {
 			return ERROR_ENOENT;
