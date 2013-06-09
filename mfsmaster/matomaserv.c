@@ -468,6 +468,63 @@ void matomaserv_beforeclose(matomaserventry *eptr) {
 	}
 }
 
+void matomaserv_fuse_rename(matomaserventry *eptr,const uint8_t *data,uint32_t length) {
+    uint32_t inode,inode_src,inode_dst;
+	uint8_t nleng_src,nleng_dst;
+	const uint8_t *name_src,*name_dst;
+	uint32_t uid,gid,auid,agid;
+	uint8_t attr[35];
+	uint32_t msgid;
+	uint8_t status;
+	uint8_t *ptr;
+	msgid = get32bit(&data);
+	inode_src = get32bit(&data);
+	nleng_src = get8bit(&data);
+	name_src = data;
+	data += nleng_src;
+	inode_dst = get32bit(&data);
+	nleng_dst = get8bit(&data);
+	name_dst = data;
+	data += nleng_dst;
+	auid = uid = get32bit(&data);
+	agid = gid = get32bit(&data);
+	status = fs_rename(1,0,inode_src,nleng_src,name_src,inode_dst,nleng_dst,name_dst,uid,gid,auid,agid,&inode,attr);
+}
+
+void matomaserv_fuse_rmdir(matomaserventry *eptr,const uint8_t *data,uint32_t length) {
+    uint32_t inode,uid,gid;
+	uint8_t nleng;
+	const uint8_t *name;
+	uint32_t msgid;
+	uint8_t *ptr;
+	uint8_t status;
+    uint8_t *datatmp = data;
+	msgid = get32bit(&data);
+	inode = get32bit(&data);
+	nleng = get8bit(&data);
+	name = data;
+	data += nleng;
+	uid = get32bit(&data);
+	gid = get32bit(&data);
+	status = fs_rmdir(1,0,inode,nleng,name,uid,gid);
+}
+void matomaserv_fuse_unlink(matomaserventry *eptr,const uint8_t *data,uint32_t length) {
+    uint32_t inode,uid,gid;
+	uint8_t nleng;
+	const uint8_t *name;
+	uint32_t msgid;
+	uint8_t *ptr;
+	uint8_t status;
+    uint8_t *datatmp = data;
+	msgid = get32bit(&data);
+	inode = get32bit(&data);
+	nleng = get8bit(&data);
+	name = data;
+	data += nleng;
+	uid = get32bit(&data);
+	gid = get32bit(&data);
+	status = fs_unlink(1,0,inode,nleng,name,uid,gid);
+}
 void matomaserv_fuse_mkdir(matomaserventry *eptr,const uint8_t *data,uint32_t length) {
     uint32_t inode,uid,gid,auid,agid;
 	uint8_t nleng;
@@ -480,19 +537,9 @@ void matomaserv_fuse_mkdir(matomaserventry *eptr,const uint8_t *data,uint32_t le
 	uint8_t status;
 	uint8_t copysgid;
     uint8_t *datatmp = data;
-	if (length<19) {
-		syslog(LOG_NOTICE,"CLTOMA_FUSE_MKDIR - wrong size (%"PRIu32")",length);
-		eptr->mode = KILL;
-		return;
-	}
 	msgid = get32bit(&data);
 	inode = get32bit(&data);
 	nleng = get8bit(&data);
-	if (length!=19U+nleng && length!=20U+nleng) {
-		syslog(LOG_NOTICE,"CLTOMA_FUSE_MKDIR - wrong size (%"PRIu32":nleng=%"PRIu8")",length,nleng);
-		eptr->mode = KILL;
-		return;
-	}
 	name = data;
 	data += nleng;
 	mode = get16bit(&data);
@@ -518,26 +565,15 @@ void matomaserv_fuse_mknod(matomaserventry *eptr,const uint8_t *data,uint32_t le
     uint8_t *ptr;
     syslog(LOG_NOTICE,"in MATOMA_FUSE_MKNOD  yujy");
     uint8_t status;
-    if (length<24) {
-        syslog(LOG_NOTICE,"MATOMA_FUSE_MKNOD - wrong size (%"PRIu32")",length);
-        eptr->mode = KILL;
-        return;
-    }
     msgid = get32bit(&data); //packet id
     inode = get32bit(&data); //parent id
     nleng = get8bit(&data);
-    if (length!=24U+nleng) {
-        syslog(LOG_NOTICE,"MATOMA_FUSE_MKNOD - wrong size (%"PRIu32":nleng=%"PRIu8")",length,nleng);
-        eptr->mode = KILL;
-        return;
-    }
     name = data;
     data += nleng;
     type = get8bit(&data);
     mode = get16bit(&data);
     auid = uid = get32bit(&data);
     agid = gid = get32bit(&data);
-    //matoclserv_ugid_remap(eptr,&uid,&gid);
     rdev = get32bit(&data);
     status = fs_mknod(1,0,inode,nleng,name,type,mode,uid,gid,auid,agid,rdev,&newinode,attr);
     syslog(LOG_NOTICE,"MATOMA_FUSE_MKNOD - after fs_mknod");
@@ -560,12 +596,21 @@ void matomaserv_gotpacket(matomaserventry *eptr,uint32_t type,const uint8_t *dat
 		case MATOMA_REGISTER:
 			matomaserv_register(eptr,data,length);
 			break;
+        case MATOMA_FUSE_RENAME: //for temporary use
+            syslog(LOG_NOTICE, "got MATOMA_FUSE_RENAME");
+            matomaserv_fuse_rename(eptr, data, length);
         case MATOMA_FUSE_MKDIR: //for temporary use
             syslog(LOG_NOTICE, "got MATOMA_FUSE_MKDIR");
             matomaserv_fuse_mkdir(eptr, data, length);
         case MATOMA_FUSE_MKNOD: //for temporary use
             syslog(LOG_NOTICE, "got MATOMA_FUSE_MKNOD");
             matomaserv_fuse_mknod(eptr, data, length);
+        case MATOMA_FUSE_UNLINK: //for temporary use
+            syslog(LOG_NOTICE, "got MATOMA_FUSE_UNLINK");
+            matomaserv_fuse_unlink(eptr, data, length);
+        case MATOMA_FUSE_RMDIR: //for temporary use
+            syslog(LOG_NOTICE, "got MATOMA_FUSE_RMDIR");
+            matomaserv_fuse_rmdir(eptr, data, length);
            // int packid = get32bit(&data);
            // int tmptmp = get32bit(&data);
            // int tmptmp2 = get8bit(&data);

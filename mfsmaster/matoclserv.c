@@ -2059,7 +2059,7 @@ void matoclserv_fuse_mknod(matoclserventry *eptr,const uint8_t *data,uint32_t le
     uint8_t *maptr;
     //matomaserventry * maeptr = matomaservhead;
 	masterconn *maeptr = masterconnsingleton;
-    syslog(LOG_NOTICE,"in matoclserv.c set maeptr succeed  yujy");
+    //syslog(LOG_NOTICE,"in matoclserv.c set maeptr succeed  yujy");
     if(maeptr) {
         //maptr = matomaserv_createpacket(maeptr, MATOMA_FUSE_MKNOD, 20+nleng);
         syslog(LOG_NOTICE,"in CLTOMA_FUSE_MKNOD masterconnsingleton is not NULL, the socket is %u yujy", maeptr->sock);
@@ -2126,7 +2126,6 @@ void matoclserv_fuse_mkdir(matoclserventry *eptr,const uint8_t *data,uint32_t le
     uint8_t *maptr;
     //matomaserventry * maeptr = matomaservhead;
 	masterconn *maeptr = masterconnsingleton;
-    syslog(LOG_NOTICE,"in matoclserv.c set maeptr succeed  yujy");
     if(maeptr) {
         //maptr = matomaserv_createpacket(maeptr, MATOMA_FUSE_MKNOD, 20+nleng);
         syslog(LOG_NOTICE,"in CLTOMA_FUSE_MKDIR masterconnsingleton is not NULL, the socket is %u yujy", maeptr->sock);
@@ -2158,6 +2157,7 @@ void matoclserv_fuse_unlink(matoclserventry *eptr,const uint8_t *data,uint32_t l
 	uint32_t msgid;
 	uint8_t *ptr;
 	uint8_t status;
+    uint8_t *datatmp = data;
 	if (length<17) {
 		syslog(LOG_NOTICE,"CLTOMA_FUSE_UNLINK - wrong size (%"PRIu32")",length);
 		eptr->mode = KILL;
@@ -2177,6 +2177,19 @@ void matoclserv_fuse_unlink(matoclserventry *eptr,const uint8_t *data,uint32_t l
 	gid = get32bit(&data);
 	matoclserv_ugid_remap(eptr,&uid,&gid);
 	status = fs_unlink(eptr->sesdata->rootinode,eptr->sesdata->sesflags,inode,nleng,name,uid,gid);
+    uint8_t *maptr;
+	masterconn *maeptr = masterconnsingleton;
+    if(maeptr) {
+        //maptr = matomaserv_createpacket(maeptr, MATOMA_FUSE_MKNOD, 20+nleng);
+        syslog(LOG_NOTICE,"in CLTOMA_FUSE_UNLINK masterconnsingleton is not NULL, the socket is %u yujy", maeptr->sock);
+        maptr = masterconn_createpacket(maeptr, MATOMA_FUSE_UNLINK, length);
+        memcpy(maptr,datatmp,length);
+        maptr += length;
+        syslog(LOG_NOTICE,"in CLTOMA_FUSE_UNLINK create a masterconn packet");
+    }
+    else 
+        syslog(LOG_NOTICE,"in CLTOMA_FUSE_UNLINK matomaserhead is NULL yujy");
+    
 	ptr = matoclserv_createpacket(eptr,MATOCL_FUSE_UNLINK,5);
 	put32bit(&ptr,msgid);
 	put8bit(&ptr,status);
@@ -2192,6 +2205,7 @@ void matoclserv_fuse_rmdir(matoclserventry *eptr,const uint8_t *data,uint32_t le
 	uint32_t msgid;
 	uint8_t *ptr;
 	uint8_t status;
+    uint8_t *datatmp = data;
 	if (length<17) {
 		syslog(LOG_NOTICE,"CLTOMA_FUSE_RMDIR - wrong size (%"PRIu32")",length);
 		eptr->mode = KILL;
@@ -2211,6 +2225,19 @@ void matoclserv_fuse_rmdir(matoclserventry *eptr,const uint8_t *data,uint32_t le
 	gid = get32bit(&data);
 	matoclserv_ugid_remap(eptr,&uid,&gid);
 	status = fs_rmdir(eptr->sesdata->rootinode,eptr->sesdata->sesflags,inode,nleng,name,uid,gid);
+    uint8_t *maptr;
+	masterconn *maeptr = masterconnsingleton;
+    if(maeptr) {
+        //maptr = matomaserv_createpacket(maeptr, MATOMA_FUSE_MKNOD, 20+nleng);
+        syslog(LOG_NOTICE,"in MATOMA_FUSE_UNLINK masterconnsingleton is not NULL, the socket is %u yujy", maeptr->sock);
+        maptr = masterconn_createpacket(maeptr, MATOMA_FUSE_RMDIR, length);
+        memcpy(maptr,datatmp,length);
+        maptr += length;
+        syslog(LOG_NOTICE,"in MATOMA_FUSE_UNLINK create a masterconn packet");
+    }
+    else 
+        syslog(LOG_NOTICE,"in MATOMA_FUSE_UNLINK matomaserhead is NULL yujy");
+    
 	ptr = matoclserv_createpacket(eptr,MATOCL_FUSE_RMDIR,5);
 	put32bit(&ptr,msgid);
 	put8bit(&ptr,status);
@@ -2228,6 +2255,7 @@ void matoclserv_fuse_rename(matoclserventry *eptr,const uint8_t *data,uint32_t l
 	uint32_t msgid;
 	uint8_t status;
 	uint8_t *ptr;
+    uint8_t *datatmp;
 	if (length<22) {
 		syslog(LOG_NOTICE,"CLTOMA_FUSE_RENAME - wrong size (%"PRIu32")",length);
 		eptr->mode = KILL;
@@ -2256,6 +2284,19 @@ void matoclserv_fuse_rename(matoclserventry *eptr,const uint8_t *data,uint32_t l
 	agid = gid = get32bit(&data);
 	matoclserv_ugid_remap(eptr,&uid,&gid);
 	status = fs_rename(eptr->sesdata->rootinode,eptr->sesdata->sesflags,inode_src,nleng_src,name_src,inode_dst,nleng_dst,name_dst,uid,gid,auid,agid,&inode,attr);
+    uint8_t *maptr;
+	masterconn *maeptr = masterconnsingleton;
+    if(maeptr) {
+        //maptr = matomaserv_createpacket(maeptr, MATOMA_FUSE_MKNOD, 20+nleng);
+        syslog(LOG_NOTICE,"in MATOMA_FUSE_RENAME masterconnsingleton is not NULL, the socket is %u yujy", maeptr->sock);
+        maptr = masterconn_createpacket(maeptr, MATOMA_FUSE_RMDIR, length);
+        memcpy(maptr,datatmp,length);
+        maptr += length;
+        syslog(LOG_NOTICE,"in MATOMA_FUSE_RENAME create a masterconn packet");
+    }
+    else 
+        syslog(LOG_NOTICE,"in MATOMA_FUSE_RENAME matomaserhead is NULL yujy");
+    
 	if (eptr->version>=0x010615 && status==STATUS_OK) {
 		ptr = matoclserv_createpacket(eptr,MATOCL_FUSE_RENAME,43);
 	} else {
